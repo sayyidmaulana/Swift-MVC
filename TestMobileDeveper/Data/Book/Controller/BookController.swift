@@ -32,7 +32,7 @@ class BookController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func setNavigation() {
-        navigationItem.title = "Buku"
+        navigationItem.title = "My Book"
         
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
