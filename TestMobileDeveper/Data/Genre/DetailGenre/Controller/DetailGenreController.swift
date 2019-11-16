@@ -31,6 +31,32 @@ class DetailGenreController: UIViewController, UICollectionViewDelegate, UIColle
         setNavigation()
         setCollectionView()
         checkDetailGenre()
+        setNavigationBar()
+    }
+    
+    func setNavigationBar() {
+        
+        self.navigationItem.setHidesBackButton(true, animated:false)
+        
+        //your custom view for back image with custom size
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 10, width: 20, height: 20))
+        
+        if let imgBackArrow = UIImage(named: "back") {
+            imageView.image = imgBackArrow
+        }
+        view.addSubview(imageView)
+        
+        let backTap = UITapGestureRecognizer(target: self, action: #selector(backToMain))
+        view.addGestureRecognizer(backTap)
+        
+        let leftBarButtonItem = UIBarButtonItem(customView: view )
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem
+        
+    }
+    
+    @objc func backToMain() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func setNavigation() {

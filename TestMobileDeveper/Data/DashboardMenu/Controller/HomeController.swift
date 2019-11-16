@@ -52,6 +52,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == 0 {
             let genreController = GenreController()
+//            let navController = UINavigationController(rootViewController: genreController)
+//            present(navController, animated: true, completion: nil)
             navigationController?.pushViewController(genreController, animated: true)
             
         } else if indexPath.item == 1 {
