@@ -27,7 +27,6 @@ class BookViewCell: UICollectionViewCell {
     
     let lblTitle: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Keen"
         lbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         lbl.font = UIFont.init(name: "HelveticaNeue-Bold", size: 15)
         return lbl
