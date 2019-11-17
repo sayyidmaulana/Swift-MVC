@@ -10,7 +10,7 @@ import UIKit
 
 // I will change My Controller
 
-class BookController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class BookController: UIViewController {
 
     var cellId = "cellId"
     
@@ -49,6 +49,45 @@ class BookController: UIViewController, UICollectionViewDelegate, UICollectionVi
         collectionView.setAnchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
     }
     
+    func checkBook() {
+        
+        CustomActivityIndicator.shared.show(uiView: self.view, backgroundColor: .gray)
+        
+        let myUrl = URL(string: book)
+        var request = URLRequest(url: myUrl!)
+        
+        request.httpMethod = "GET"
+        request.addValue(headerValue, forHTTPHeaderField: headerKey)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+            
+            guard let data = data else { return }
+            
+            do {
+                
+                let JSONData = try JSONDecoder().decode(ModelBook.self, from: data)
+                
+                self.bookData = JSONData.result
+                
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    
+                    CustomActivityIndicator.shared.hide(uiView: self.view)
+                }
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+            
+            }.resume()
+    }
+}
+
+extension BookController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return bookData.count
     }
@@ -97,42 +136,5 @@ class BookController: UIViewController, UICollectionViewDelegate, UICollectionVi
         let detailBookController = DetailBookController()
         detailBookController.bookId = "\(bookId)"
         navigationController?.pushViewController(detailBookController, animated: true)
-    }
-    
-    func checkBook() {
-        
-        CustomActivityIndicator.shared.show(uiView: self.view, backgroundColor: .gray)
-        
-        let myUrl = URL(string: book)
-        var request = URLRequest(url: myUrl!)
-        
-        request.httpMethod = "GET"
-        request.addValue(headerValue, forHTTPHeaderField: headerKey)
-        
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            if error != nil {
-                print(error!.localizedDescription)
-            }
-            
-            guard let data = data else { return }
-            
-            do {
-                
-                let JSONData = try JSONDecoder().decode(ModelBook.self, from: data)
-                
-                self.bookData = JSONData.result
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    
-                    CustomActivityIndicator.shared.hide(uiView: self.view)
-                }
-                
-            } catch let jsonError {
-                print(jsonError)
-            }
-            
-            }.resume()
     }
 }
