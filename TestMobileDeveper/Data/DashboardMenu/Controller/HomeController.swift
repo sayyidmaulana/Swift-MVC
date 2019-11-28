@@ -16,6 +16,30 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                       HomeModel(image: "book", title: "Buku"),
                       HomeModel(image: "writer", title: "Penulis")]
     
+    lazy var titleStackView: UIStackView = {
+        let titleLabel = UILabel()
+        titleLabel.textAlignment = .center
+        titleLabel.text = "Title"
+        let subtitleLabel = UILabel()
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.text = "Subtitle"
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
+        stackView.axis = .vertical
+        return stackView
+    }()
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if view.traitCollection.horizontalSizeClass == .compact {
+            titleStackView.axis = .vertical
+            titleStackView.spacing = UIStackView.spacingUseDefault
+        } else {
+            titleStackView.axis = .horizontal
+            titleStackView.spacing = 20.0
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,6 +47,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func setNavigation() {
+        
+        navigationItem.titleView = titleStackView
         
         collectionView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
